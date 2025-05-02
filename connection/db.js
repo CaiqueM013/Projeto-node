@@ -7,7 +7,7 @@ if(process.env.ENVIRONMENT === "system"){
         process.env.DATABASE_USERNAME,
         process.env.DATABASE_PASSWORD,
         {
-            dialect: 'mysql',
+            dialect: 'postgres',
             host: process.env.DATABASE_HOST,
             port: process.env.DATABASE_PORT,
         }
@@ -19,7 +19,7 @@ if(process.env.ENVIRONMENT === "system"){
         process.env.DATABASE_USERNAME,
         process.env.DATABASE_PASSWORD,
         {
-            dialect: 'mysql',
+            dialect: 'postgres',
             host: process.env.DATABASE_HOST,
             port: process.env.DATABASE_PORT,
         }
