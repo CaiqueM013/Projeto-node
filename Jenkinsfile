@@ -1,43 +1,60 @@
 pipeline {
   agent any
 
+  tools {
+    nodejs 'node18'
+  }
+
+  environment {
+    IMAGE_NAME = "node-app"
+    KUBE_NAMESPACE = "node-app"
+  }
+
   stages {
-    stage('Tests') {
+
+    stage('Checkout') {
       steps {
-        echo 'Rodando testes'
-        sh '''
-          npm ci
-          npm test
-        '''
+        git branch: 'main',
+            url: 'https://github.com/CaiqueM013/Projeto-node.git'
+      }
+    }
+
+    stage('Install Dependencies') {
+      steps {
+        sh 'npm install'
+      }
+    }
+
+    stage('Run Tests') {
+      steps {
+        sh 'npm test'
       }
     }
 
     stage('Build Docker Image') {
       steps {
-        echo 'Build da imagem Docker'
-        sh '''
-          docker build -t node-app:latest .
-        '''
+        sh """
+          docker build -t $IMAGE_NAME:latest .
+        """
       }
     }
 
     stage('Deploy to Kubernetes') {
       steps {
-        echo 'Deploy no Kubernetes'
-        sh '''
+        sh """
           kubectl apply -f k8s/deployment.yaml
           kubectl apply -f k8s/service.yaml
-        '''
+        """
       }
     }
   }
 
   post {
     success {
-      echo '✅ Pipeline executado com sucesso'
+      echo 'Deploy realizado com sucesso 🚀'
     }
     failure {
-      echo '❌ Pipeline falhou'
+      echo 'Pipeline falhou ❌'
     }
   }
 }

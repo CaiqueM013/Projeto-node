@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: node-app
+  namespace: node-app
 spec:
   replicas: 1
   selector:
@@ -15,6 +16,6 @@ spec:
       containers:
         - name: node-app
           image: node-app:latest
-          imagePullPolicy: Never
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
