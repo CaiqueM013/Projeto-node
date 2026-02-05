@@ -1,48 +1,37 @@
 pipeline {
-  agent any
+    agent any
 
-  environment {
-    IMAGE_NAME = "node-app"
-    IMAGE_TAG  = "latest"
-    KUBE_NAMESPACE = "kube-public"
-  }
-
-  stages {
-
-    stage('Checkout') {
-      steps {
-        echo 'Clonando repositório do GitHub'
-        git branch: 'main',
-            url: 'https://github.com/CaiqueM013/Projeto-node.git'
-      }
+    environment {
+        IMAGE_NAME = "node-app"
+        IMAGE_TAG  = "latest"
     }
 
-    stage('Build Docker Image') {
-      steps {
-        echo 'Build da imagem Docker (npm roda no Dockerfile)'
-        sh '''
-          docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
-        '''
-      }
-    }
+    stages {
+        stage('Checkout') {
+            steps {
+                // Tente usar esta forma mais robusta de checkout
+                checkout scm
+                
+                // Ou se for forçar o clone manual:
+                // git branch: 'main', url: 'https://github.com/CaiqueM013/Projeto-node.git'
+            }
+        }
 
-    stage('Deploy to Kubernetes (Docker Desktop)') {
-      steps {
-        echo 'Deploy no Kubernetes'
-        sh '''
-          kubectl apply -f k8s/deployment.yaml
-          kubectl apply -f k8s/service.yaml
-        '''
-      }
-    }
-  }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    // Usar o comando sh para buildar a imagem
+                    sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
+                }
+            }
+        }
 
-  post {
-    success {
-      echo 'Pipeline executado com sucesso 🚀'
+        stage('Deploy') {
+            steps {
+                // Certifique-se que os arquivos .yaml existem na pasta k8s
+                sh "kubectl apply -f k8s/deployment.yaml"
+                sh "kubectl apply -f k8s/service.yaml"
+            }
+        }
     }
-    failure {
-      echo 'Pipeline falhou ❌'
-    }
-  }
 }

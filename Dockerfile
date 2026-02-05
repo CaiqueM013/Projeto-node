@@ -1,18 +1,14 @@
+# Usa uma imagem leve do Node
 FROM node:20-alpine
 
-FROM jenkins/jenkins:2.541.1-jdk21
-
-USER root
-RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
-    && apt-get install -y nodejs
-USER jenkins
-
-
+# Define o diretório de trabalho
 WORKDIR /app
 
+# Instala dependências
 COPY package*.json ./
 RUN npm ci
 
+# Copia o restante dos arquivos e builda
 COPY . .
 RUN npm run build
 
