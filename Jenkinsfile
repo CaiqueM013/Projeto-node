@@ -13,7 +13,7 @@ pipeline {
       steps {
         echo 'Clonando repositório do GitHub'
         git branch: 'main',
-            url: 'https://github.com/SEU_USUARIO/SEU_REPOSITORIO.git'
+            url: 'https://github.com/CaiqueM013/Projeto-node.git'
       }
     }
 
