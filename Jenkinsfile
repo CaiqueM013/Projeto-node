@@ -17,26 +17,9 @@ pipeline {
       }
     }
 
-    stage('Install Dependencies') {
-      steps {
-        sh 'npm ci'
-      }
-    }
-
-    stage('Run Tests') {
-      steps {
-        sh 'npm test'
-      }
-    }
-
-    stage('Build App') {
-      steps {
-        sh 'npm run build'
-      }
-    }
-
     stage('Build Docker Image') {
       steps {
+        echo 'Build da imagem Docker (npm roda no Dockerfile)'
         sh '''
           docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
         '''
@@ -45,6 +28,7 @@ pipeline {
 
     stage('Deploy to Kubernetes (Docker Desktop)') {
       steps {
+        echo 'Deploy no Kubernetes'
         sh '''
           kubectl apply -f k8s/deployment.yaml
           kubectl apply -f k8s/service.yaml
