@@ -11,9 +11,9 @@ describe('loginController', () => {
 
     await loginController.login(req, res);
 
-    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.status).toHaveBeenCalledWith(422);
     expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
-      error: expect.any(String)
+      msg: expect.any(String)
     }));
   });
 });
