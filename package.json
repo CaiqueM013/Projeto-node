@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "npx jest --runInBand",
-    "test:ci": "jest --runInBand --coverage",
+    "test:ci": "npx jest --runInBand --coverage",
     "start": "node app.js"
   },
   "keywords": [],
