@@ -3,6 +3,10 @@
 pipeline {
   agent any
 
+  triggers {
+    githubPush()
+  }
+
   tools {
     nodejs 'node18'
   }
