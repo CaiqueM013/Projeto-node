@@ -1,9 +1,9 @@
 //importações
 require('dotenv').config()
 const express = require('express')
-const sequelize = require('../BackEnd/connection/db')
-const userRoutes = require('../BackEnd/routes/userCRoutes')
-const authRoutes = require('../BackEnd/routes/authRoutes')
+const sequelize = require('./src/connection/db')
+const userRoutes = require('./src/routes/userCRoutes')
+const authRoutes = require('./src/routes/authRoutes')
 
 const app = express()
 app.use(express.json())
